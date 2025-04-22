@@ -7,11 +7,17 @@
     "build:css": "npx @tailwindcss/cli -i src/css/main.css -o build/css/style.css",
     "build": "node scripts/build.js && npm run build:css",
     "watch": "npm-watch",
-    "dev": "concurrently \"npm run watch\" \"live-server build --port=3000 --quiet\""
+    "dev": "concurrently \"npm run watch\" \"live-server build --port=3000 --quiet\"",
+    "minify:html": "for file in build/*.html; do npx minify \"$file\" > tmp && mv tmp \"$file\"; done",
+    "minify:css": "for file in build/css/*.css; do npx minify \"$file\" > tmp && mv tmp \"$file\"; done",
+    "minify:js": "for file in build/scripts/*.js; do npx minify \"$file\" > tmp && mv tmp \"$file\"; done",
+    "minify": "npm run minify:html && npm run minify:css && npm run minify:js"
   },
   "watch": {
     "build": {
-      "patterns": ["src"],
+      "patterns": [
+        "src"
+      ],
       "extensions": "hbs,css,js"
     }
   },
@@ -29,6 +35,8 @@
   "devDependencies": {
     "concurrently": "^9.1.2",
     "live-server": "^1.2.2",
+    "minify": "^14.0.0",
+    "minify-cli": "^1.0.0",
     "npm-watch": "^0.13.0",
     "watch": "^1.0.2"
   }
