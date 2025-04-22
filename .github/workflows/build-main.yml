@@ -16,3 +16,20 @@ jobs:
       - name: Install deps
         run: npm install
 
+			- name: Build project
+				run: npm run build
+
+			- name: Archive build
+				run: |
+					mkdir -p .temp
+					tar -czf .temp/project-build.tar.gz build
+
+			- name: Upload build via CSP
+				uses: appleboy/scp-action@v0.1.7
+				with:
+					host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+					source: .temp/project-build.tar.gz
+					target: ${{ secrets.TARGET }}
+					strip_components: 1
